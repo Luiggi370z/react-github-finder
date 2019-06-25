@@ -15,7 +15,7 @@ const Search = () => {
 
   const onSubmit = e => {
     e.preventDefault()
-    if (!text) setAlert('Please enter something', 'light')
+    if (!text) setAlert({ msg: 'Please enter something', type: 'light' })
     else {
       searchUsers(text)
       setText('')

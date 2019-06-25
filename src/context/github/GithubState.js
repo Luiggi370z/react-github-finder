@@ -6,9 +6,18 @@ import GithubReducer from './githubReducer'
 
 const apiRoot = 'https://api.github.com'
 
-const authParams = `client_id=${
-  process.env.REACT_APP_GITHUB_CLIENT_ID
-}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+let githubClientId
+let githubClientSecret
+
+if (process.env.NODE_ENV !== 'production') {
+  githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID
+  githubClientSecret = process.env.REACT_APP_GITHUB_CLIENT_SECRET
+} else {
+  githubClientId = process.env.GITHUB_CLIENT_ID
+  githubClientSecret = process.env.GITHUB_CLIENT_SECRET
+}
+
+const authParams = `client_id=${githubClientId}&client_secret=${githubClientSecret}`
 
 const GithubState = ({ children }) => {
   const initialState = {
