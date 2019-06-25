@@ -10,7 +10,7 @@ const authParams = `client_id=${
   process.env.REACT_APP_GITHUB_CLIENT_ID
 }&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
 
-const GithubState = props => {
+const GithubState = ({ children }) => {
   const initialState = {
     users: [],
     user: {},
@@ -20,13 +20,11 @@ const GithubState = props => {
 
   const [state, dispatch] = useReducer(GithubReducer, initialState)
 
-  // Set Loading
   const setLoading = () =>
     dispatch({
       type: types.SET_LOADING,
     })
 
-  // Search Users
   const searchUsers = async text => {
     setLoading()
 
@@ -36,14 +34,35 @@ const GithubState = props => {
 
     dispatch({
       type: types.SEARCH_USERS,
+      payload: res.data.items,
+    })
+  }
+
+  const getUser = async username => {
+    setLoading()
+
+    const res = await axios.get(`${apiRoot}/users/${username}?${authParams}`)
+
+    dispatch({
+      type: types.GET_USER,
       payload: res.data,
     })
   }
-  // Get user
 
-  // Get Repos
+  const getUserRepos = async username => {
+    setLoading()
 
-  // Clear users
+    const res = await axios.get(
+      `${apiRoot}/users/${username}/repos?per_page=5&sort=created:asc&${authParams}`,
+    )
+
+    dispatch({
+      type: types.GET_REPOS,
+      payload: res.data,
+    })
+  }
+
+  const clearUsers = () => dispatch({ type: types.CLEAR_USERS })
 
   return (
     <GithubContext.Provider
@@ -52,9 +71,13 @@ const GithubState = props => {
         user: state.user,
         repos: state.repos,
         loading: state.loading,
+        searchUsers,
+        clearUsers,
+        getUser,
+        getUserRepos,
       }}
     >
-      {props.children}
+      {children}
     </GithubContext.Provider>
   )
 }
