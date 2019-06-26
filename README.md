@@ -1,6 +1,11 @@
-# React GitHub Finder
+# React GitHub Finder - Hooks ... Hooks everywhere 🙌🏼
+## Introduction
 
-Small app to demostrate basic features of modern reactJS (2019)
+Small app to demostrate basic features of modern reactJS (2019) with hooks and a few best practices for reducers structure.
+
+## App Link
+
+You can see in action [here](https://luiggi-github-finder.netlify.com/).
 
 ## Available Scripts
 
